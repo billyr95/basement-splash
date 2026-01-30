@@ -49,8 +49,11 @@ export default function AsciiArt() {
       // Measure the widest line
       const maxWidth = Math.max(...asciiLines.map(line => ctx.measureText(line).width))
       
-      canvas.width = maxWidth + 20 // Add padding
-      canvas.height = asciiLines.length * (fontSize * 1.5) // Line height = font size * 1.5
+      const padding = 20
+      const topPadding = fontSize * 0.5 // Extra padding at top to prevent clipping
+      
+      canvas.width = maxWidth + (padding * 2) // Padding on both sides
+      canvas.height = asciiLines.length * (fontSize * 1.5) + topPadding + padding // Add top and bottom padding
 
       setDimensions({ width: canvas.width, height: canvas.height })
 
@@ -62,16 +65,16 @@ export default function AsciiArt() {
       ctx.font = `${fontSize}px "CustomFont", monospace`
       ctx.textBaseline = 'top'
 
-      // Draw text without glow first
+      // Draw text without glow first (with padding offset)
       asciiLines.forEach((line, i) => {
-        ctx.fillText(line, 10, i * (fontSize * 1.5))
+        ctx.fillText(line, padding, i * (fontSize * 1.5) + topPadding)
       })
 
       // Add glow effect
       ctx.shadowColor = 'rgba(139, 175, 194, 0.5)'
       ctx.shadowBlur = 10
       asciiLines.forEach((line, i) => {
-        ctx.fillText(line, 10, i * (fontSize * 1.5))
+        ctx.fillText(line, padding, i * (fontSize * 1.5) + topPadding)
       })
     }
 
