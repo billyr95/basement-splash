@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import AsciiArt from '@/components/AsciiArt'
 
 export default function SplashPage() {
   const [email, setEmail] = useState('')
@@ -42,17 +43,8 @@ export default function SplashPage() {
   return (
     <main className="min-h-screen bg-black text-terminal flex flex-col items-center justify-center p-4">
       <div className="container max-w-4xl">
-        {/* ASCII Art */}
-        <pre className="ascii-art text-center mb-8 overflow-x-auto">
-{` BBBS   _    _       _  _     _      _     _    _  RFC
- ______／ ＼__／ ＼  ___／ ＼／ ＼___／ ＼ ___／ ＼___／ ＼__／ ＼____
-／  _  __ ／＼  _ ＼／  ___／＼  ___＼  ˇ  ／＼  ___＼    ＼__    ＼
-＼_／／  __ ＼／  ＼  ＼___  ＼／  __／  ＼／  ＼／  __／   ／ ／ ／ ／＼_／
-   ＼__   ／＼   ＼_／  ___／___  ＼__／   ／___  ＼__／  ＼／  ＼  
- 20   ＼_／  ＼__／ ＼_／       ＼_／  ＼__／    ＼_／  ＼__／＼__／ 26
-            Basement Bulletin Board System
-                   [WEBSITE LOADING]`}
-        </pre>
+        {/* ASCII Art Canvas */}
+        <AsciiArt />
 
         {/* Subscription Form */}
         <div className="terminal-box mx-auto max-w-md">
