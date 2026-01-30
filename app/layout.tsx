@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Basement Loading...",
@@ -43,8 +44,9 @@ export default function RootLayout({
       <head>
         <meta charSet="utf-8" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        {/* ASCII Art Easter Egg */}
-        {`<!--
+        <Script id="ascii-art" strategy="beforeInteractive">
+          {`
+console.log(\`
  BBBS   _    _       _  _     _      _     _    _  RFC
  ______／ ＼__／ ＼  ___／ ＼／ ＼___／ ＼ ___／ ＼___／ ＼__／ ＼____
 ／  _  __ ／＼  _ ＼／  ___／＼  ___＼  ˇ  ／＼  ___＼    ＼__    ＼
@@ -53,10 +55,9 @@ export default function RootLayout({
  20   ＼_／  ＼__／ ＼_／       ＼_／  ＼__／    ＼_／  ＼__／＼__／ 26
             Basement Bulletin Board System
                    [WEBSITE LOADING]
-
-Welcome to the source, curious explorer.
-Looking for something? Email us: hello@basementload.ing
--->`}
+\`);
+          `}
+        </Script>
       </head>
       <body className="antialiased">
         {children}
