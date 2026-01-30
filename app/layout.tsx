@@ -6,16 +6,16 @@ export const metadata: Metadata = {
   description: "Basement Bulletin Board System - A retro terminal-style blog launching soon. Sign up for early access notifications.",
   keywords: ["Basement", "Terminal Blog", "Retro Computing", "Bulletin Board System"],
   authors: [{ name: "Basement" }],
-  creator: "Basenebt",
+  creator: "Basement",
   publisher: "Basement",
   robots: {
     index: true,
     follow: true,
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
   openGraph: {
     type: "website",
