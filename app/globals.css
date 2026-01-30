@@ -1,26 +1,142 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/JDGWiredOS-Square.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'CustomFont', 'Courier New', monospace;
+  background-color: #000;
+  color: #8bafc2;
+}
+
+/* CRT scanline effect */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.5) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  animation: scanline-move 8s linear infinite;
+}
+
+@keyframes scanline-move {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(10px); }
+}
+
+.ascii-art {
+  font-size: 10px;
+  line-height: 1.2;
+  color: #8bafc2;
+  text-shadow: 
+    0 0 5px rgba(139, 175, 194, 0.5),
+    0 0 10px rgba(139, 175, 194, 0.3);
+}
+
+@media (max-width: 768px) {
+  .ascii-art {
+    font-size: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ascii-art {
+    font-size: 4px;
+  }
+}
+
+.terminal-box {
+  border: 1px solid #8bafc2;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.terminal-header {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.input-line {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #333;
+  padding: 8px 0;
+}
+
+.prompt-symbol {
+  margin-right: 8px;
+}
+
+input::placeholder {
+  color: #555;
+}
+
+.terminal-button {
+  background-color: transparent;
+  border: 1px solid #8bafc2;
+  color: #8bafc2;
+  padding: 12px 24px;
+  font-family: 'CustomFont', 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.terminal-button:hover:not(:disabled) {
+  background-color: #8bafc2;
+  color: #000;
+}
+
+.terminal-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.message {
+  font-size: 12px;
+  text-align: center;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.text-terminal {
+  color: #8bafc2;
+}
+
+/* Hide scrollbars */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
