@@ -9,6 +9,13 @@ export default function SplashPage() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Only allow numbers
+    const value = e.target.value.replace(/\D/g, '')
+    // Limit to 10 digits (US/Canada format)
+    setPhone(value.slice(0, 10))
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
@@ -23,13 +30,27 @@ export default function SplashPage() {
       return
     }
 
+    // Validate phone if provided (must be 10 digits)
+    if (phone && phone.length !== 10) {
+      setStatus('error')
+      setMessage('✗ Please enter a valid 10-digit phone number.')
+      setTimeout(() => {
+        setStatus('idle')
+        setMessage('')
+      }, 5000)
+      return
+    }
+
     setStatus('loading')
+
+    // Format phone with +1 prefix for Laylo
+    const formattedPhone = phone ? `+1${phone}` : null
 
     try {
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email || null, phone: phone || null }),
+        body: JSON.stringify({ email: email || null, phone: formattedPhone }),
       })
 
       const data = await response.json()
@@ -87,16 +108,17 @@ export default function SplashPage() {
               />
             </div>
 
-            {/* Phone Input */}
+            {/* Phone Input with +1 prefix */}
             <div className="input-line">
               <span className="prompt-symbol text-terminal">&gt;</span>
+              <span className="text-terminal ml-2 font-mono">+1</span>
               <input
                 type="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={handlePhoneChange}
                 placeholder="phone number (optional)"
                 disabled={status === 'loading'}
-                className="flex-1 bg-transparent border-none text-terminal outline-none ml-2 font-mono"
+                className="flex-1 bg-transparent border-none text-terminal outline-none ml-1 font-mono"
               />
             </div>
 
