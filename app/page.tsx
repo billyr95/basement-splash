@@ -3,8 +3,54 @@
 import { useState } from 'react'
 import AsciiArt from '@/components/AsciiArt'
 
+// Common country codes
+const countryCodes = [
+  { code: '+1', country: 'US/CA', flag: '🇺🇸' },
+  { code: '+44', country: 'UK', flag: '🇬🇧' },
+  { code: '+61', country: 'AU', flag: '🇦🇺' },
+  { code: '+33', country: 'FR', flag: '🇫🇷' },
+  { code: '+49', country: 'DE', flag: '🇩🇪' },
+  { code: '+81', country: 'JP', flag: '🇯🇵' },
+  { code: '+86', country: 'CN', flag: '🇨🇳' },
+  { code: '+91', country: 'IN', flag: '🇮🇳' },
+  { code: '+52', country: 'MX', flag: '🇲🇽' },
+  { code: '+55', country: 'BR', flag: '🇧🇷' },
+  { code: '+34', country: 'ES', flag: '🇪🇸' },
+  { code: '+39', country: 'IT', flag: '🇮🇹' },
+  { code: '+7', country: 'RU', flag: '🇷🇺' },
+  { code: '+82', country: 'KR', flag: '🇰🇷' },
+  { code: '+31', country: 'NL', flag: '🇳🇱' },
+  { code: '+46', country: 'SE', flag: '🇸🇪' },
+  { code: '+47', country: 'NO', flag: '🇳🇴' },
+  { code: '+45', country: 'DK', flag: '🇩🇰' },
+  { code: '+358', country: 'FI', flag: '🇫🇮' },
+  { code: '+48', country: 'PL', flag: '🇵🇱' },
+  { code: '+420', country: 'CZ', flag: '🇨🇿' },
+  { code: '+351', country: 'PT', flag: '🇵🇹' },
+  { code: '+30', country: 'GR', flag: '🇬🇷' },
+  { code: '+90', country: 'TR', flag: '🇹🇷' },
+  { code: '+972', country: 'IL', flag: '🇮🇱' },
+  { code: '+971', country: 'AE', flag: '🇦🇪' },
+  { code: '+966', country: 'SA', flag: '🇸🇦' },
+  { code: '+27', country: 'ZA', flag: '🇿🇦' },
+  { code: '+234', country: 'NG', flag: '🇳🇬' },
+  { code: '+20', country: 'EG', flag: '🇪🇬' },
+  { code: '+54', country: 'AR', flag: '🇦🇷' },
+  { code: '+56', country: 'CL', flag: '🇨🇱' },
+  { code: '+57', country: 'CO', flag: '🇨🇴' },
+  { code: '+51', country: 'PE', flag: '🇵🇪' },
+  { code: '+66', country: 'TH', flag: '🇹🇭' },
+  { code: '+65', country: 'SG', flag: '🇸🇬' },
+  { code: '+60', country: 'MY', flag: '🇲🇾' },
+  { code: '+62', country: 'ID', flag: '🇮🇩' },
+  { code: '+63', country: 'PH', flag: '🇵🇭' },
+  { code: '+84', country: 'VN', flag: '🇻🇳' },
+  { code: '+64', country: 'NZ', flag: '🇳🇿' },
+]
+
 export default function SplashPage() {
   const [email, setEmail] = useState('')
+  const [countryCode, setCountryCode] = useState('+1')
   const [phone, setPhone] = useState('')
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
@@ -12,8 +58,8 @@ export default function SplashPage() {
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Only allow numbers
     const value = e.target.value.replace(/\D/g, '')
-    // Limit to 10 digits (US/Canada format)
-    setPhone(value.slice(0, 10))
+    // Limit to 15 digits (international max)
+    setPhone(value.slice(0, 15))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,10 +76,10 @@ export default function SplashPage() {
       return
     }
 
-    // Validate phone if provided (must be 10 digits)
-    if (phone && phone.length !== 10) {
+    // Validate phone if provided (must have at least 7 digits)
+    if (phone && phone.length < 7) {
       setStatus('error')
-      setMessage('✗ Please enter a valid 10-digit phone number.')
+      setMessage('✗ Please enter a valid phone number.')
       setTimeout(() => {
         setStatus('idle')
         setMessage('')
@@ -43,8 +89,8 @@ export default function SplashPage() {
 
     setStatus('loading')
 
-    // Format phone with +1 prefix for Laylo
-    const formattedPhone = phone ? `+1${phone}` : null
+    // Format phone with selected country code for Laylo
+    const formattedPhone = phone ? `${countryCode}${phone}` : null
 
     try {
       const response = await fetch('/api/subscribe', {
@@ -108,10 +154,26 @@ export default function SplashPage() {
               />
             </div>
 
-            {/* Phone Input with +1 prefix */}
+            {/* Phone Input with country code dropdown */}
             <div className="input-line">
               <span className="prompt-symbol text-terminal">&gt;</span>
-              <span className="text-terminal ml-2 font-mono">+1</span>
+              <select
+                value={countryCode}
+                onChange={(e) => setCountryCode(e.target.value)}
+                disabled={status === 'loading'}
+                className="bg-transparent border-none text-terminal outline-none ml-2 font-mono cursor-pointer"
+                style={{ appearance: 'none', paddingRight: '4px' }}
+              >
+                {countryCodes.map((country) => (
+                  <option 
+                    key={country.code} 
+                    value={country.code}
+                    className="bg-black text-terminal"
+                  >
+                    {country.flag} {country.code}
+                  </option>
+                ))}
+              </select>
               <input
                 type="tel"
                 value={phone}
