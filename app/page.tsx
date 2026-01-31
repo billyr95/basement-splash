@@ -118,7 +118,7 @@ export default function SplashPage() {
                 onChange={handlePhoneChange}
                 placeholder="phone number (optional)"
                 disabled={status === 'loading'}
-                className="flex-1 bg-transparent border-none text-terminal outline-none ml-1 font-mono"
+                className="flex-1 bg-transparent border-none text-terminal outline-none pl-[5px] font-mono"
               />
             </div>
 
