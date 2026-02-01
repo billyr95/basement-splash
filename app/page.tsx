@@ -126,7 +126,7 @@ export default function SplashPage() {
 
   return (
     <main className="min-h-screen bg-black text-terminal flex flex-col items-center justify-center p-4">
-      <div className="container max-w-4xl">
+      <div className="container mt-[30px] mb-[30px] max-w-4xl">
         {/* ASCII Art Canvas */}
         <AsciiArt />
 
@@ -197,6 +197,28 @@ export default function SplashPage() {
                 {message}
               </div>
             )}
+
+            <p className="text-white text-[10px] mt-8 pt-[15px] text-center leading-relaxed">
+              By providing your phone number, you agree to Laylo's{' '}
+              <a 
+                href="https://laylo.com/terms" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white underline hover:opacity-80 transition-opacity"
+              >
+                Terms and Conditions
+              </a>
+              {' '}and{' '}
+              <a 
+                href="https://laylo.com/privacy" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-white underline hover:opacity-80 transition-opacity"
+              >
+                Privacy Policy
+              </a>
+              .
+            </p>
           </form>
 
           <div className="terminal-footer mt-6 text-center text-xs opacity-70">
